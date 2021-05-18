@@ -1,0 +1,207 @@
+Recurso: /user/{userId}
+Verbos Aceptados: GET
+
+GET	/user/{userId} - Devuelve las información de un usuario, así como las listas de las series comenzadas, 
+				pendientes y finalizadas, y de sus facturas, tanto de mes actual como de los pasados
+
+Parámetros:
+	Usuario  - Usuario del que obtener la información
+
+Respuestas: 200 Ok, 400 Bad Request
+	
+Modelo de Respuesta:
+[
+    {
+        "id": 1,
+        "nombreUsuario": "JohnyLamoa",
+        "abono": PayPerView,
+        "listaSeriesComenzadas": [
+        	"serie":{
+        		"título": "Bojack Horseman"
+        	},
+        	"serie":{
+        		"título": "The Boys"
+        	}
+        ],
+        "listaSeriesPendientes": [
+        	"serie":{
+        		"título": "Los Soprano"
+        	}
+        ],
+        "listaSeriesVistas": [
+        	"serie":{
+        		"título": "Me Llamo Earl"
+        	},"serie":{
+        		"título": "Como Conoci A Vuestra Madre"
+        	},
+       	],
+        "facturacionMesActual":[
+        	"entradaFactura":{
+        		"fechaViualizacion": 01/01/2021,
+        		"serie":{
+        			"título": "The Boys"
+        		}
+        		numTemporada: 2
+        		numCapitulo: 1
+        	},
+        	"entradaFactura":{
+        		"fechaViualizacion": 01/01/2021,
+        		"serie":{
+        			"título": "The Boys"
+        		}
+        		numTemporada: 2
+        		numCapitulo: 2
+        	}
+        ],
+        "facturasPasadasyActual": [
+        	"factura": {
+        		"mes": "Enero",
+        		"anho": 2021,
+        		"coste": 16'50,
+        		"facturacionMesActual":[
+        			"entradaFactura":{
+        				"fechaViualizacion": 01/01/2021,
+        				"serie":{
+        					"título": "The Boys",
+        					"tipoDeSerie": Gold
+        					"precio": 1'50
+        				}
+        				numTemporada: 2
+        				numCapitulo: 1
+        			},
+        			"entradaFactura":{
+        				"fechaViualizacion": 01/01/2021,
+        				"serie":{
+        					"título": "The Boys",
+        					"tipoDeSerie": Gold
+        					"precio": 1'50
+        				}
+        				numTemporada: 2
+        				numCapitulo: 2
+        			}
+       	 		],
+    		},
+    		"factura": {
+        		"mes": "Diciembre",
+        		"anho": 2020,
+        		"coste": 18'50,
+        		"facturacionMesActual":[
+        			"entradaFactura":{
+        				"fechaViualizacion": 01/12/2020,
+        				"serie":{
+        					"título": "The Boys",
+        					"tipoDeSerie": Gold
+        					"precio": 1'50
+        				}
+        				numTemporada: 1
+        				numCapitulo: 1
+        			},
+        			"entradaFactura":{
+        				"fechaViualizacion": 01/12/2020,
+        				"serie":{
+        					"título": "The Boys",
+        					"tipoDeSerie": Gold
+        					"precio": 1'50
+        				}
+        				numTemporada: 2
+        				numCapitulo: 2
+        			}
+       	 		],
+    		},
+    	],
+    }
+    
+]
+	 
+Recurso: /user/{userId}/series
+Verbos HTTP aceptados: GET
+
+GET /user/{userId}/series - Devuelve la información de las series
+
+Parámetros:
+	Serie  - Serie de la que obtener la información: temporadas y capítulos
+
+Respuestas: 200 Ok, 404 Not Found
+
+Modelo de Respuesta:
+{
+   "id": 1,
+   "precio": 1'50,
+   "titulo": "The Boys",
+   "TipoDeSerie": Gold,
+   "Sinopsis": "Avengers Mal",
+   "temporadasDeLaSerie": [
+       "temporada": {
+        		"numTemporada": 1,
+        		"capitulosDeLaTemporada": [
+        			"capitulo": {
+        				"numCapitulo": 1,
+        				"descripcion": "Butcher mata a un supe"
+        			},
+        			"capitulo": {
+        				"numCapitulo": 2,
+        				"descripcion": "Butcher mata a un supe"
+        			}
+        		]
+        },
+        "temporada": {
+        		"numTemporada": 2,
+        		"capitulosDeLaTemporada": [
+        			"capitulo": {
+        				"numCapitulo": 1,
+        				"descripcion": "Butcher mata a un supe"
+        			},
+        			"capitulo": {
+        				"numCapitulo": 2,
+        				"descripcion": "Butcher mata a un supe"
+        			}
+        		]
+        },
+	]      	
+}
+
+Recurso: /user/{userId}/series/anhadir
+Verbos HTTP aceptados: GET
+
+GET /user/{userId}/series - Devuelve la información de las series
+
+Parámetros:
+	Letra  - Primera letra de los capítulos a retornar
+	Nombre de Serie  - Nobre de la serie a retornar
+
+Respuestas: 200 Ok, 404 Not Found
+
+Modelo de Respuesta:
+{
+	"id": 1,
+   	"precio": 1'50,
+   	"titulo": "The Boys",
+   	"Sinopsis": "Avengers Mal",
+   	"actoresPrincipales": [
+   		"actor": {
+   			"nombre": "Karl Urban",
+   			"personaje": "Butcher"
+   		},
+   		"actor": {
+   			"nombre": "Jack Quaid",
+   			"personaje": "Hughie"
+   		}
+   	],   
+   	"direccion": [
+   		"director": {
+   			"nombre": "Eric Kripke"
+   		},
+   	],    	
+}
+
+Recurso: /user/{userId}/facturacion
+Verbos HTTP aceptados: GET
+
+GET /user/{userId}/facturacion - Devuelve la información de las series
+
+Parámetros:
+	Mes - Mes del que obtener información de facturación
+
+Respuestas: 200 Ok, 404 Not Found
+
+Modelo de Respuesta: La información se obtiene en la pantalla principal y está almacenada en caché
