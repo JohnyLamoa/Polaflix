@@ -1,4 +1,4 @@
-Recurso: /user/{userId}
+Recurso: /users/{userId}
 Verbos Aceptados: GET
 
 GET	/user/{userId} - Devuelve las información de un usuario, así como las listas de las series comenzadas, 
@@ -113,7 +113,7 @@ Modelo de Respuesta:
     
 ]
 	 
-Recurso: /user/{userId}/series
+Recurso: /users/{userId}/series
 Verbos HTTP aceptados: GET
 
 GET /user/{userId}/series - Devuelve la información de las series
@@ -160,7 +160,7 @@ Modelo de Respuesta:
 	]      	
 }
 
-Recurso: /user/{userId}/series/anhadir
+Recurso: /users/{userId}/series/anhadir
 Verbos HTTP aceptados: GET
 
 GET /user/{userId}/series - Devuelve la información de las series
@@ -194,7 +194,7 @@ Modelo de Respuesta:
    	],    	
 }
 
-Recurso: /user/{userId}/facturacion
+Recurso: /users/{userId}/facturacion
 Verbos HTTP aceptados: GET
 
 GET /user/{userId}/facturacion - Devuelve la información de las series
