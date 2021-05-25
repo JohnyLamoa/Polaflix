@@ -9,6 +9,6 @@ import es.migmardi.repositories.UsuarioRepository;
 @RestController
 @RequestMapping("/user")
 public class serieController {
-	@Autowired
-	UsuarioRepository ur;
+	//@Autowired
+	//UsuarioRepository ur;
 }

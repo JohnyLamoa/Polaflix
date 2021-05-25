@@ -15,16 +15,21 @@ import es.migmardi.repositories.UsuarioRepository;
 @Component
 public class AppFeeder implements CommandLineRunner {
 	
-	@Autowired
-	protected UsuarioRepository ur;
+	
 	@Autowired
 	protected SerieRepository sr;
+	
+	@Autowired
+	protected UsuarioRepository ur;
+	
+	
 
 	
 	@Override
 	public void run(String... args) throws Exception {
-		feedUsuarios();
 		feedSeries();
+		feedUsuarios();
+		
 		//feedViajes();
 		
 		//testViajeRepository();
