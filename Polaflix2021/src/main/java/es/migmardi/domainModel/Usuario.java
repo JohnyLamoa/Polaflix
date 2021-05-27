@@ -125,7 +125,10 @@ public class Usuario {
 				getFacturaCoste(), (ArrayList<EntradaFactura>) facturacionMesActual));
 		facturacionMesActual.clear();
 	}
-
+	
+	public ArrayList<Factura> getAllFacturas(){
+		return (ArrayList<Factura>) facturasPasadas;
+	}
 
 
 

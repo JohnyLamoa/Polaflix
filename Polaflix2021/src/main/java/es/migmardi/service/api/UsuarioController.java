@@ -1,5 +1,6 @@
 package es.migmardi.service.api;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import es.migmardi.domainModel.Factura;
 import es.migmardi.domainModel.Usuario;
 import es.migmardi.repositories.UsuarioRepository;
 
@@ -23,17 +25,17 @@ import es.migmardi.repositories.UsuarioRepository;
 public class UsuarioController {
 	@Autowired
 	UsuarioRepository ur;
-	
+
 	Logger logger = LoggerFactory.getLogger(UsuarioController.class);
-	
+
 	@GetMapping(value="/{id}")
 	@JsonView(Views.DescripcionUsuario.class)
-		
+
 	public ResponseEntity<Usuario> obtenerUsuario(@PathVariable("id") long userId) {
-		
+
 		Optional<Usuario> u = ur.findById(userId);
 		ResponseEntity<Usuario> result;
-		
+
 		if (u.isPresent()) {
 			result = ResponseEntity.ok(u.get());
 		} else { 
@@ -42,6 +44,23 @@ public class UsuarioController {
 
 		return result; 	
 	}
-	
-	
+
+	@GetMapping(value="/{id}/facturacion")
+	@JsonView(Views.DescripcionUsuario.class)
+
+	public ResponseEntity<ArrayList<Factura>> obtenerFacturacion(@PathVariable("id") long userId) {
+
+		Optional<Usuario> u = ur.findById(userId);
+		ResponseEntity<ArrayList<Factura>> result;
+
+		if (u.isPresent()) {
+			result = ResponseEntity.ok(u.get().getAllFacturas());
+		} else { 
+			result = ResponseEntity.notFound().build();
+		}
+
+		return result; 	
+	}
 }
+
+

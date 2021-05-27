@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.migmardi.domainModel.Usuario;
-import es.migmardi.repositories.UsuarioRepository;
+import es.migmardi.domainModel.Serie;
+import es.migmardi.repositories.SerieRepository;
 
 
 
@@ -22,20 +22,20 @@ import es.migmardi.repositories.UsuarioRepository;
 @RequestMapping("/series")
 public class SerieController {
 	@Autowired
-	UsuarioRepository ur;
+	SerieRepository sr;
 	
 	Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 	
 	@GetMapping(value="/{id}")
-	@JsonView(Views.DescripcionUsuario.class)
+	@JsonView(Views.DescripcionSerie.class)
 		
-	public ResponseEntity<Usuario> obtenerUsuario(@PathVariable("id") long userId) {
+	public ResponseEntity<Serie> obtenerUsuario(@PathVariable("id") long serieId) {
 		
-		Optional<Usuario> u = ur.findById(userId);
-		ResponseEntity<Usuario> result;
+		Optional<Serie> s = sr.findById(serieId);
+		ResponseEntity<Serie> result;
 		
-		if (u.isPresent()) {
-			result = ResponseEntity.ok(u.get());
+		if (s.isPresent()) {
+			result = ResponseEntity.ok(s.get());
 		} else { 
 			result = ResponseEntity.notFound().build();
 		}
