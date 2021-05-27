@@ -1,5 +1,6 @@
 package es.migmardi.service.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -25,6 +26,18 @@ public class SerieController {
 	SerieRepository sr;
 	
 	Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+	
+	@GetMapping
+	@JsonView(Views.DescripcionSerie.class)
+		
+	public ResponseEntity<List<Serie>> obtenerAllSeries() {
+		
+		ResponseEntity<List<Serie>> result;
+		
+		result = ResponseEntity.ok(sr.findAll());
+
+		return result; 	
+	}
 	
 	@GetMapping(value="/{id}")
 	@JsonView(Views.DescripcionSerie.class)
