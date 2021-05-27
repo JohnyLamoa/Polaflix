@@ -1,7 +1,7 @@
 Recurso: /users/{userId}
 Verbos Aceptados: GET
 
-GET	/user/{userId} - Devuelve las información de un usuario, así como las listas de las series comenzadas, 
+GET	/users/{userId} - Devuelve las información de un usuario, así como las listas de las series comenzadas, 
 				pendientes y finalizadas, y de sus facturas, tanto de mes actual como de los pasados
 
 Parámetros:
@@ -112,14 +112,55 @@ Modelo de Respuesta:
     }
     
 ]
-	 
-Recurso: /users/{userId}/series
+
+Recurso: /users/{userId}/facturacion
 Verbos HTTP aceptados: GET
 
-GET /user/{userId}/series - Devuelve la información de las series
+GET /user/{userId}/facturacion - Devuelve la información de las series
 
 Parámetros:
-	Serie  - Serie de la que obtener la información: temporadas y capítulos
+	Mes - Mes del que obtener información de facturación
+
+Respuestas: 200 Ok, 404 Not Found
+
+Modelo de Respuesta: La información se obtiene en la pantalla principal y está almacenada en caché
+
+	 
+Recurso: /series
+Verbos HTTP aceptados: GET
+
+GET /series - Devuelve la información de todas las series 
+
+Parámetros:
+	Ninguno
+
+Respuestas: 200 Ok, 404 Not Found
+
+Modelo de Respuesta:
+[
+	{
+   "id": 1,
+   "precio": 1'50,
+   "titulo": "The Boys",
+   "TipoDeSerie": Gold,
+   "Sinopsis": "Avengers Mal",
+   },
+   {
+   "id": 2,
+   "precio": 0'75,
+   "titulo": "Me Llamo Earl",
+   "TipoDeSerie": Standard,
+   "Sinopsis": "Karma",
+   }    	
+]
+
+Recurso: /series/{idSerie}
+Verbos HTTP aceptados: GET
+
+GET /user/{userId}/series - Devuelve la información de una serie en concreto
+
+Parámetros:
+	idSerie - Serie de la que obtener toda la información
 
 Respuestas: 200 Ok, 404 Not Found
 
@@ -159,49 +200,3 @@ Modelo de Respuesta:
         },
 	]      	
 }
-
-Recurso: /users/{userId}/series/anhadir
-Verbos HTTP aceptados: GET
-
-GET /user/{userId}/series - Devuelve la información de las series
-
-Parámetros:
-	Letra  - Primera letra de los capítulos a retornar
-	Nombre de Serie  - Nobre de la serie a retornar
-
-Respuestas: 200 Ok, 404 Not Found
-
-Modelo de Respuesta:
-{
-	"id": 1,
-   	"precio": 1'50,
-   	"titulo": "The Boys",
-   	"Sinopsis": "Avengers Mal",
-   	"actoresPrincipales": [
-   		"actor": {
-   			"nombre": "Karl Urban",
-   			"personaje": "Butcher"
-   		},
-   		"actor": {
-   			"nombre": "Jack Quaid",
-   			"personaje": "Hughie"
-   		}
-   	],   
-   	"direccion": [
-   		"director": {
-   			"nombre": "Eric Kripke"
-   		},
-   	],    	
-}
-
-Recurso: /users/{userId}/facturacion
-Verbos HTTP aceptados: GET
-
-GET /user/{userId}/facturacion - Devuelve la información de las series
-
-Parámetros:
-	Mes - Mes del que obtener información de facturación
-
-Respuestas: 200 Ok, 404 Not Found
-
-Modelo de Respuesta: La información se obtiene en la pantalla principal y está almacenada en caché
