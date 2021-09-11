@@ -13,12 +13,14 @@ public class Capitulo {
 	private long idCapitulo;
 	private int numeroDeCapitulo;
 	private String descripcion;
+	private boolean visto;
 	
 	protected Capitulo() {}
 	
 	public Capitulo(int ndc, String desc) {
 		numeroDeCapitulo=ndc;
 		descripcion=desc;
+		visto=false;
 	}
 	
 	public int getNumeroDeCapitulo() {
@@ -32,5 +34,13 @@ public class Capitulo {
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public boolean getVisto() {
+		return visto;
+	}
+
+	public void setVisto(boolean visto) {
+		this.visto = visto;
 	}
 }

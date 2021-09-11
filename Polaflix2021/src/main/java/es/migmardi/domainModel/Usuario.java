@@ -9,30 +9,42 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.migmardi.service.api.Views.DescripcionUsuario;
+
 @Entity
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@JsonView(DescripcionUsuario.class)
 	private long ID_Usuario;
+	@JsonView(DescripcionUsuario.class)
 	private String nombreDeUsuario;
 	private String contrasegna;
 	private String IBAN;
+	@JsonView(DescripcionUsuario.class)
 	private TipoDeAbono abono;
 	@OneToMany
+	@JsonView(DescripcionUsuario.class)
 	private List<Serie> listaSeriesPendientes;
 	@OneToMany
+	@JsonView(DescripcionUsuario.class)
 	private List<SerieComenzada> listaSeriesComenzadas;
 	@OneToMany
+	@JsonView(DescripcionUsuario.class)
 	private List<Serie> listaSeriesVistas;
 	@OneToMany
+	@JsonView(DescripcionUsuario.class)
 	private List<Factura> facturasPasadas;
 	@OneToMany
+	@JsonView(DescripcionUsuario.class)
 	private List<EntradaFactura> facturacionMesActual;
 
 
 	protected Usuario() {
 	}
-	
+
 	public Usuario(String nDU, String con, String IBAN, TipoDeAbono abono) {
 		this.IBAN = IBAN;
 		this.setNombreDeUsuario(nDU);
@@ -84,13 +96,16 @@ public class Usuario {
 		listaSeriesPendientes.add(serie);
 	}
 
-	public void addSerieToListaComenzadas(SerieComenzada serie) {
+	public void addSerieToListaComenzadas(Serie serie, int utv, int ucv) {
 		if(listaSeriesPendientes.contains(serie)) {//Es posible comenzar una serie que no esté en la lista de pendientes
 			listaSeriesPendientes.remove(serie);
 		}
-		listaSeriesComenzadas.add(serie);
+		SerieComenzada serie1 = (SerieComenzada) serie;
+		serie1.setUltimaTemporadaVista(utv);
+		serie1.setUltimoCapituloVisto(ucv);
+		listaSeriesComenzadas.add(serie1);
 	}
-	
+
 	public void removeSerieFromListaComenzadas(SerieComenzada serie) {
 		listaSeriesComenzadas.remove(serie);
 	}
@@ -99,7 +114,7 @@ public class Usuario {
 		listaSeriesComenzadas.remove(serie);//Si o si, para terminar una serie ha de haber sido comenzada previamente
 		listaSeriesVistas.add(serie);
 	}
-	
+
 	public void removeSerieFromListaVistas(Serie serie) {
 		listaSeriesVistas.remove(serie);
 	}
@@ -118,16 +133,24 @@ public class Usuario {
 		}
 		return getFacturacion();
 	}
-	
+
 	public void addFactura() {
 		facturasPasadas.add(
 				new Factura(Calendar.MONTH, Calendar.YEAR, 
-				getFacturaCoste(), (ArrayList<EntradaFactura>) facturacionMesActual));
+						getFacturaCoste(), (ArrayList<EntradaFactura>) facturacionMesActual));
 		facturacionMesActual.clear();
 	}
-	
-	public ArrayList<Factura> getAllFacturas(){
-		return (ArrayList<Factura>) facturasPasadas;
+
+	public void addEntradaFactura(EntradaFactura ef) {
+		facturacionMesActual.add(ef);
+	}
+
+	public List<Factura> getAllFacturas(){
+		return facturasPasadas;
+	}
+	public void visualizaCapitulo(SerieComenzada serie, int numTemporada, int numCapitulo) {
+		serie.setUltimaTemporadaVista(numTemporada);
+		serie.setUltimoCapituloVisto(numCapitulo);
 	}
 
 

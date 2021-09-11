@@ -21,8 +21,9 @@ public class EntradaFactura {
 	private int numTemporada;
 	private int numCapitulo;
 
-	public EntradaFactura() {}
 
+	public EntradaFactura() {}
+	
 	private Capitulo getCapitulo() {
 		return serie.getTemporadaDeLaSerie(numTemporada).getCapituloDeLaSerie(numCapitulo);
 	}

@@ -1,6 +1,7 @@
 package es.migmardi.service.api;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import es.migmardi.domainModel.Factura;
 import es.migmardi.domainModel.Usuario;
 import es.migmardi.repositories.UsuarioRepository;
+import es.migmardi.service.api.Views.DescripcionUsuario;
 
 
 
@@ -30,7 +32,6 @@ public class UsuarioController {
 
 	@GetMapping(value="/{id}")
 	@JsonView(Views.DescripcionUsuario.class)
-
 	public ResponseEntity<Usuario> obtenerUsuario(@PathVariable("id") long userId) {
 
 		Optional<Usuario> u = ur.findById(userId);
@@ -47,13 +48,12 @@ public class UsuarioController {
 
 	@GetMapping(value="/{id}/facturacion")
 	@JsonView(Views.DescripcionUsuario.class)
-
-	public ResponseEntity<ArrayList<Factura>> obtenerFacturacion(@PathVariable("id") long userId) {
+	public ResponseEntity<List<Factura>> obtenerFacturacion(@PathVariable("id") long userId) {
 
 		Optional<Usuario> u = ur.findById(userId);
-		ResponseEntity<ArrayList<Factura>> result;
+		ResponseEntity<List<Factura>> result;
 
-		if (u.isPresent()) {
+		if (u.isPresent() && u.get().getAllFacturas().size()!=0) {
 			result = ResponseEntity.ok(u.get().getAllFacturas());
 		} else { 
 			result = ResponseEntity.notFound().build();
