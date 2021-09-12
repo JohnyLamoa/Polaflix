@@ -1,6 +1,6 @@
 package es.migmardi.service;
 
-class ResourceNotFoundException extends Exception {
+public class ResourceNotFoundException extends Exception {
 	/**
 	 * 
 	 */

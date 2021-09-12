@@ -115,7 +115,7 @@ public class Usuario {
 		if(listaSeriesPendientes.contains(serie)) {//Es posible comenzar una serie que no esté en la lista de pendientes
 			listaSeriesPendientes.remove(serie);
 		}
-		SerieComenzada serie1 = (SerieComenzada) serie;
+		SerieComenzada serie1 = new SerieComenzada(serie, utv, ucv);
 		serie1.setUltimaTemporadaVista(utv);
 		serie1.setUltimoCapituloVisto(ucv);
 		listaSeriesComenzadas.add(serie1);

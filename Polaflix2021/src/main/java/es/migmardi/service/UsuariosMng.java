@@ -1,5 +1,8 @@
 package es.migmardi.service;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ import es.migmardi.repositories.UsuarioRepository;
 @Service
 public class UsuariosMng {
 		
+	@PersistenceUnit
+	EntityManagerFactory emf;
 	@Autowired
 	SerieRepository sr;
 	@Autowired
@@ -26,7 +31,7 @@ public class UsuariosMng {
 	public Usuario visualizaCapitulo(long userID,long serieID, int numTemporada, int numCapitulo) throws ResourceNotFoundException {
 		
 		Usuario user = ur.findById(userID).orElseThrow(ResourceNotFoundException::new);
-		Serie serie = sr.findById(serieID).orElseThrow(ResourceNotFoundException::new); 
+		Serie serie = (Serie) sr.findById(serieID).orElseThrow(ResourceNotFoundException::new); 
 		
 		Temporada temporada = serie.getTemporadaDeLaSerie(numTemporada);
 		Capitulo capitulo = temporada.getCapituloDeLaSerie(numCapitulo);

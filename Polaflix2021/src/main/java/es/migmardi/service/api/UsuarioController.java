@@ -27,6 +27,7 @@ import es.migmardi.domainModel.Serie;
 import es.migmardi.domainModel.Usuario;
 import es.migmardi.repositories.SerieRepository;
 import es.migmardi.repositories.UsuarioRepository;
+import es.migmardi.service.ResourceNotFoundException;
 import es.migmardi.service.UsuariosMng;
 import es.migmardi.service.api.Views.DescripcionUsuario;
 
@@ -85,24 +86,16 @@ public class UsuarioController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping(value="/{id}/series/{serieID}/visualizar")
 	@JsonView(Views.DescripcionUsuario.class)
-	public ResponseEntity<Usuario> visualizaCapitulo(@PathVariable("id") long userID, 
+	public void visualizaCapitulo(@PathVariable("id") long userID, 
 			@PathVariable("serieID") long serieID, 
 			@RequestParam(required=true) int numTemporada,
 			@RequestParam(required=true) int numCapitulo) {
 		
-		ResponseEntity<Usuario> result = null;
-		
 		try {
-			Usuario f = um.visualizaCapitulo(userID, serieID, numTemporada, numCapitulo);
-			if (f != null) {
-				result = ResponseEntity.ok(f);
-			} else {
-				result = new ResponseEntity<Usuario>(HttpStatus.FORBIDDEN);
-			}
-		} catch (Exception e) {
-			result = ResponseEntity.notFound().build();
+			um.visualizaCapitulo(userID, serieID, numTemporada, numCapitulo);
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
 		}
-		return result;
 	}
 	
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -110,11 +103,11 @@ public class UsuarioController {
 	@JsonView(Views.DescripcionUsuario.class)
 	public void anhadePendiente(@PathVariable("id") long userID, 
 			@PathVariable("serieID") long serieID) {
-		
-		ResponseEntity<Usuario> result = null;
-		Optional<Usuario> u = ur.findById(userID);
-		Optional<Serie> s = sr.findById(serieID);
-		u.get().addSerieToListaPendientes(s.get());
+		try {
+			um.anhadeSerieAPendiente(userID, serieID);
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	

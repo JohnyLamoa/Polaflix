@@ -1,7 +1,9 @@
 package es.migmardi;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import es.migmardi.domainModel.Actor;
+import es.migmardi.domainModel.Capitulo;
 import es.migmardi.domainModel.EntradaFactura;
 import es.migmardi.domainModel.Serie;
+import es.migmardi.domainModel.Temporada;
 import es.migmardi.domainModel.TipoDeAbono;
 import es.migmardi.domainModel.TipoDeSerie;
 import es.migmardi.domainModel.Usuario;
@@ -52,6 +56,18 @@ public class AppFeeder implements CommandLineRunner {
 		
 		s2.setActoresPrincipales(setActores2);
 		
+		Capitulo c1= new Capitulo(1, "Capitulo1");
+		Capitulo c2= new Capitulo(2, "Capitulo2");
+		Capitulo c3= new Capitulo(3, "Capitulo3");
+		
+		Map<Integer, Capitulo> map1 = new HashMap<Integer, Capitulo>();
+		map1.put(1, c1);
+		map1.put(2, c2);
+		map1.put(3, c3);
+		
+		Temporada t1=new Temporada(map1);
+		s1.setTemporadasDeLaSerie(t1, 1);
+		
 		sr.save(s1);
 		sr.save(s2);
 		sr.save(s3);
@@ -79,9 +95,9 @@ public class AppFeeder implements CommandLineRunner {
 		u1.addEntradaFactura(ef2);
 		u1.addEntradaFactura(ef3);
 		
-		u1.addSerieToListaPendientes(s1);
-		u1.addSerieToListaPendientes(s2);
-		u1.addSerieToListaPendientes(s3);
+		//u1.addSerieToListaPendientes(s1);
+		//u1.addSerieToListaPendientes(s2);
+		//u1.addSerieToListaPendientes(s3);
 		
 		ur.save(u1);
 		ur.save(u2);

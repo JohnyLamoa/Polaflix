@@ -1,5 +1,6 @@
 package es.migmardi.domainModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -138,12 +139,15 @@ public class Serie {
 	}
 
 	public Temporada getTemporadaDeLaSerie(int numeroDeTemporada) {
-		return temporadasDeLaSerie.get(numeroDeTemporada);
+		return temporadasDeLaSerie.get(numeroDeTemporada-1);
 	}
 
 	public void setTemporadasDeLaSerie(Temporada temporadaDeLaSerie, int numeroDeTemporada) {
-		temporadasDeLaSerie.add(temporadaDeLaSerie);
-		temporadaDeLaSerie.setNumeroDeTemporada(numeroDeTemporada);
+		if(temporadasDeLaSerie==null) {
+			temporadasDeLaSerie=new ArrayList<Temporada>();
+		}
+		temporadasDeLaSerie.add(numeroDeTemporada-1, temporadaDeLaSerie);
+		temporadaDeLaSerie.setNumeroDeTemporada(numeroDeTemporada-1);
 	}
 
 	/*public Calendar getPreviousPriceChangeDate(Calendar currentDate) {
