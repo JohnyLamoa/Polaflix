@@ -168,9 +168,4 @@ public class Usuario {
 		return facturacionMesActual;
 	}
 	
-	public void visualizaCapitulo(Serie serie, int numTemporada, int numCapitulo) {
-		SerieComenzada serieComenzada = new SerieComenzada(serie,0,0);
-		serieComenzada.setUltimaTemporadaVista(numTemporada);
-		serieComenzada.setUltimoCapituloVisto(numCapitulo);
-	}
 }

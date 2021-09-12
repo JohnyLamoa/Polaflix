@@ -15,14 +15,7 @@ import es.migmardi.repositories.UsuarioRepository;
 
 @Service
 public class UsuariosMng {
-	
-	class ResourceNotFound extends Exception {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-	}
-	
+		
 	@Autowired
 	SerieRepository sr;
 	@Autowired
@@ -30,24 +23,24 @@ public class UsuariosMng {
 	
 	
 	@Transactional
-	public Usuario visualizaCapitulo(long userID,long numIDSerie, int numTemporada, int numCapitulo) throws ResourceNotFound {
+	public Usuario visualizaCapitulo(long userID,long serieID, int numTemporada, int numCapitulo) throws ResourceNotFoundException {
 		
-		Usuario user = ur.findById(userID).orElseThrow(ResourceNotFound::new);
-		Serie serie = sr.findById(numIDSerie).orElseThrow(ResourceNotFound::new); //accedidas al repositorio
+		Usuario user = ur.findById(userID).orElseThrow(ResourceNotFoundException::new);
+		Serie serie = sr.findById(serieID).orElseThrow(ResourceNotFoundException::new); 
 		
 		Temporada temporada = serie.getTemporadaDeLaSerie(numTemporada);
 		Capitulo capitulo = temporada.getCapituloDeLaSerie(numCapitulo);
 		
-		user.visualizaCapitulo(serie, temporada.getNumeroDeTemporada(), capitulo.getNumeroDeCapitulo());
+		user.addSerieToListaComenzadas(serie, temporada.getNumeroDeTemporada(), capitulo.getNumeroDeCapitulo());
 		
 		return user;
 	}
 	
 	@Transactional
-	public Usuario anhadeSerieAPendiente(long userID, long idSerie) throws ResourceNotFound {
+	public Usuario anhadeSerieAPendiente(long userID, long idSerie) throws ResourceNotFoundException {
 		
-		Usuario user = ur.findById(userID).orElseThrow(ResourceNotFound::new);
-		Serie serie = sr.findById(idSerie).orElseThrow(ResourceNotFound::new);
+		Usuario user = ur.findById(userID).orElseThrow(ResourceNotFoundException::new);
+		Serie serie = sr.findById(idSerie).orElseThrow(ResourceNotFoundException::new);
 		user.addSerieToListaPendientes(serie);
 		return user;
 	}

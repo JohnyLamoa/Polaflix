@@ -125,6 +125,16 @@ Respuestas: 200 Ok, 404 Not Found
 
 Modelo de Respuesta: La información se obtiene en la pantalla principal y está almacenada en caché
 
+Recurso: /users/{userID}/{serieID}/verCapituo?temporadaNum?{numTemporada}&numCapitulo{numCapitulo}
+Verbos HTTP aceptados: POST
+
+Parámetros aceptados:
+	userID - Usuario que ve el capítulo
+	serieID - Serie que ve el usuario
+	numTemporada - Numero de temporada que ve
+	numCapitulo - Numero de capitulo de la temporada que ve
+	
+Respuestas: 200 Ok
 	 
 Recurso: /series
 Verbos HTTP aceptados: GET

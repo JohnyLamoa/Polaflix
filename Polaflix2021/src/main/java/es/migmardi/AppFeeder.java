@@ -37,9 +37,9 @@ public class AppFeeder implements CommandLineRunner {
 		Usuario u2 = new Usuario(2L, "JohnyLamoa", "1234", "ES67890", TipoDeAbono.SuscripcionMensual);
 		Usuario u3 = new Usuario(3L, "mmd835", "admin", "ES123678", TipoDeAbono.SuscripcionMensual);
 		
-		Serie s1 = new Serie("TheBoys", 0.75f, TipoDeSerie.Silver, "Avengers mal");
-		Serie s2 = new Serie("Breaking Bad", 1.0f, TipoDeSerie.Gold, "Quimica");
-		Serie s3 = new Serie("Bojack Horseman", 0.75f, TipoDeSerie.Estandar, "Lorem Ipsum");
+		Serie s1 = new Serie(1L, "TheBoys", 0.75f, TipoDeSerie.Silver, "Avengers mal");
+		Serie s2 = new Serie(2L, "Breaking Bad", 1.0f, TipoDeSerie.Gold, "Quimica");
+		Serie s3 = new Serie(3L, "Bojack Horseman", 0.75f, TipoDeSerie.Estandar, "Lorem Ipsum");
 		
 		Actor a1=new Actor("Brian Cranston", "Heisenberg");
 		Actor a2=new Actor("Aaron Paul", "Jessie Pinkman");
@@ -79,6 +79,10 @@ public class AppFeeder implements CommandLineRunner {
 		u1.addEntradaFactura(ef2);
 		u1.addEntradaFactura(ef3);
 		
+		u1.addSerieToListaPendientes(s1);
+		u1.addSerieToListaPendientes(s2);
+		u1.addSerieToListaPendientes(s3);
+		
 		ur.save(u1);
 		ur.save(u2);
 		ur.save(u3);
@@ -105,7 +109,7 @@ public class AppFeeder implements CommandLineRunner {
 	}
 	
 	private void feedSeries() {
-		Serie s = new Serie("TheBoys", 0.75f, TipoDeSerie.Silver, "Avengers mal");
+		Serie s = new Serie(1L, "TheBoys", 0.75f, TipoDeSerie.Silver, "Avengers mal");
 		sr.save(s);
 	}
 

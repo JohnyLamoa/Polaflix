@@ -36,7 +36,7 @@ public class Serie {
 	private TipoDeSerie tipoDeSerie;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long ID_Serie;
 	
 	@JsonView(DescripcionSerie.class)
@@ -59,7 +59,8 @@ public class Serie {
 
 	protected Serie() {}
 	
-	public Serie (String titulo, float precio, TipoDeSerie tds, String sinopsis){
+	public Serie (long ID_serie, String titulo, float precio, TipoDeSerie tds, String sinopsis){
+		this.ID_Serie=ID_serie;
 		this.setTitulo(titulo);
 		this.setPrecio(precio);
 		this.setTipoDeSerie(tds);
