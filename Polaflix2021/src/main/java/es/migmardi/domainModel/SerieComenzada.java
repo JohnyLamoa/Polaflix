@@ -10,8 +10,8 @@ public class SerieComenzada extends Serie{
 	
 	protected SerieComenzada() {}
 	
-	public SerieComenzada(String titulo, float precio, long ID_Serie, TipoDeSerie tds, String sinopsis, int utv, int ucv) {
-		super(titulo, precio, ID_Serie, tds, sinopsis);
+	public SerieComenzada(Serie serie, int utv, int ucv) {
+		super(serie);
 		setUltimaTemporadaVista(utv);
 		setUltimoCapituloVisto(ucv);
 	}

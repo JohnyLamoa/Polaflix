@@ -1,13 +1,15 @@
 package es.migmardi;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import es.migmardi.domainModel.Actor;
 import es.migmardi.domainModel.EntradaFactura;
-import es.migmardi.domainModel.Factura;
 import es.migmardi.domainModel.Serie;
 import es.migmardi.domainModel.TipoDeAbono;
 import es.migmardi.domainModel.TipoDeSerie;
@@ -31,8 +33,60 @@ public class AppFeeder implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		feedSeries();
-		feedUsuarios();
+		Usuario u1 = new Usuario(1L, "Migmardi", "pass", "ES12345", TipoDeAbono.PayPerView);
+		Usuario u2 = new Usuario(2L, "JohnyLamoa", "1234", "ES67890", TipoDeAbono.SuscripcionMensual);
+		Usuario u3 = new Usuario(3L, "mmd835", "admin", "ES123678", TipoDeAbono.SuscripcionMensual);
+		
+		Serie s1 = new Serie("TheBoys", 0.75f, TipoDeSerie.Silver, "Avengers mal");
+		Serie s2 = new Serie("Breaking Bad", 1.0f, TipoDeSerie.Gold, "Quimica");
+		Serie s3 = new Serie("Bojack Horseman", 0.75f, TipoDeSerie.Estandar, "Lorem Ipsum");
+		
+		Actor a1=new Actor("Brian Cranston", "Heisenberg");
+		Actor a2=new Actor("Aaron Paul", "Jessie Pinkman");
+		Actor a3=new Actor("Giancarlo Esposito", "Gustavo \"Gus\" Fring");
+		
+		Set<Actor> setActores2=new HashSet<Actor>();
+		setActores2.add(a1);
+		setActores2.add(a2);
+		setActores2.add(a3);
+		
+		s2.setActoresPrincipales(setActores2);
+		
+		sr.save(s1);
+		sr.save(s2);
+		sr.save(s3);
+		
+		Calendar cal1 = Calendar.getInstance();
+		cal1.set(Calendar.YEAR, 2020);
+		cal1.set(Calendar.MONTH, 2);
+		cal1.set(Calendar.DAY_OF_MONTH, 3);
+		
+		Calendar cal2 = Calendar.getInstance();
+		cal2.set(Calendar.YEAR, 2020);
+		cal2.set(Calendar.MONTH, 2);
+		cal2.set(Calendar.DAY_OF_MONTH, 4);
+		
+		Calendar cal3 = Calendar.getInstance();
+		cal3.set(Calendar.YEAR, 2020);
+		cal3.set(Calendar.MONTH, 2);
+		cal3.set(Calendar.DAY_OF_MONTH, 5);
+		
+		EntradaFactura ef1=new EntradaFactura(cal1, s1, 1, 1);
+		EntradaFactura ef2=new EntradaFactura(cal2, s1, 1, 2);
+		EntradaFactura ef3=new EntradaFactura(cal3, s1, 1, 3);
+		
+		u1.addEntradaFactura(ef1);
+		u1.addEntradaFactura(ef2);
+		u1.addEntradaFactura(ef3);
+		
+		ur.save(u1);
+		ur.save(u2);
+		ur.save(u3);
+		
+		
+		//feedSeries();
+		//feedUsuarios();
+		
 		
 		//feedViajes();
 		
@@ -42,14 +96,16 @@ public class AppFeeder implements CommandLineRunner {
 	}
 
 	private void feedUsuarios() {
-		Usuario u1 = new Usuario("Migmardi", "pass", "ES12345", TipoDeAbono.PayPerView);
-		Usuario u2 = new Usuario("JohnyLamoa", "1234", "ES67890", TipoDeAbono.SuscripcionMensual);
+		Usuario u1 = new Usuario(1L, "Migmardi", "pass", "ES12345", TipoDeAbono.PayPerView);
+		Usuario u2 = new Usuario(2L, "JohnyLamoa", "1234", "ES67890", TipoDeAbono.SuscripcionMensual);
+		Usuario u3 = new Usuario(3L, "mmd835", "admin", "ES123678", TipoDeAbono.SuscripcionMensual);
 		ur.save(u1);
 		ur.save(u2);
+		ur.save(u3);
 	}
 	
 	private void feedSeries() {
-		Serie s = new Serie("TheBoys", 0.75f, 1234567890L, TipoDeSerie.Silver, "Avengers mal");
+		Serie s = new Serie("TheBoys", 0.75f, TipoDeSerie.Silver, "Avengers mal");
 		sr.save(s);
 	}
 

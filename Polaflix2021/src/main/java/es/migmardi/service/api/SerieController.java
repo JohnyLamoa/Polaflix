@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,14 @@ public class SerieController {
 	
 	Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 	
-	@GetMapping
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping(value="/")
+	@JsonView(Views.DescripcionSerie.class)
+	List<Serie> obtenerAllSeries() {
+		return sr.findAll();
+	}
+
+	/*
 	@JsonView(Views.DescripcionSerie.class)
 		
 	public ResponseEntity<List<Serie>> obtenerAllSeries() {
@@ -38,12 +46,12 @@ public class SerieController {
 		result = ResponseEntity.ok(sr.findAll());
 
 		return result; 	
-	}
+	}*/
 	
 	@GetMapping(value="/{id}")
 	@JsonView(Views.DescripcionSerie.class)
 		
-	public ResponseEntity<Serie> obtenerUsuario(@PathVariable("id") long serieId) {
+	public ResponseEntity<Serie> obtenerSerie(@PathVariable("id") long serieId) {
 		
 		Optional<Serie> s = sr.findById(serieId);
 		ResponseEntity<Serie> result;

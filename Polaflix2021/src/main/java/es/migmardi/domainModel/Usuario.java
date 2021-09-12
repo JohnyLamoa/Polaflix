@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -16,7 +18,7 @@ import es.migmardi.service.api.Views.DescripcionUsuario;
 @Entity
 public class Usuario {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@JsonView(DescripcionUsuario.class)
 	private long ID_Usuario;
 	@JsonView(DescripcionUsuario.class)
@@ -37,7 +39,7 @@ public class Usuario {
 	@OneToMany
 	@JsonView(DescripcionUsuario.class)
 	private List<Factura> facturasPasadas;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	@JsonView(DescripcionUsuario.class)
 	private List<EntradaFactura> facturacionMesActual;
 
@@ -45,7 +47,8 @@ public class Usuario {
 	protected Usuario() {
 	}
 
-	public Usuario(String nDU, String con, String IBAN, TipoDeAbono abono) {
+	public Usuario(long IDu,String nDU, String con, String IBAN, TipoDeAbono abono) {
+		this.ID_Usuario=IDu;
 		this.IBAN = IBAN;
 		this.setNombreDeUsuario(nDU);
 		this.setContrasegna(con);
@@ -53,6 +56,7 @@ public class Usuario {
 		listaSeriesPendientes=new ArrayList<Serie>();
 		listaSeriesComenzadas=new ArrayList<SerieComenzada>();
 		listaSeriesVistas=new ArrayList<Serie>();
+		facturacionMesActual=new ArrayList<EntradaFactura>();
 	}
 
 	//Getters y setters varios
@@ -88,6 +92,17 @@ public class Usuario {
 	//Agnadir y eliminar series a las listas vistas, pendientes y comenzdas
 
 	public void addSerieToListaPendientes(Serie serie) {
+		//El método para agregar una serie a pendientes debería verificar que la serie 
+		//no esté ya ni en pendientes, ni en empezadas ni en terminadas.  
+		if(listaSeriesComenzadas.contains(serie)) {
+			removeSerieFromListaComenzadas((SerieComenzada)serie);
+		}
+		if(listaSeriesVistas.contains(serie)) {
+			removeSerieFromListaVistas(serie);
+		}
+		if(listaSeriesPendientes.contains(serie)) {
+			removeSerieFromListaPendientes(serie);
+		}
 		listaSeriesPendientes.add(serie);
 	}
 
@@ -122,7 +137,7 @@ public class Usuario {
 	public float getFacturacion() {
 		float precioTotal=0.0f;
 		for(EntradaFactura fact:facturacionMesActual) {
-			precioTotal+=fact.getPrice();
+			precioTotal+=fact.getPrice(fact.getFechaVisualizacion());
 		}
 		return precioTotal;
 	}
@@ -148,11 +163,14 @@ public class Usuario {
 	public List<Factura> getAllFacturas(){
 		return facturasPasadas;
 	}
-	public void visualizaCapitulo(SerieComenzada serie, int numTemporada, int numCapitulo) {
-		serie.setUltimaTemporadaVista(numTemporada);
-		serie.setUltimoCapituloVisto(numCapitulo);
+	
+	public List<EntradaFactura> getFacturasMesActual(){
+		return facturacionMesActual;
 	}
-
-
-
+	
+	public void visualizaCapitulo(Serie serie, int numTemporada, int numCapitulo) {
+		SerieComenzada serieComenzada = new SerieComenzada(serie,0,0);
+		serieComenzada.setUltimaTemporadaVista(numTemporada);
+		serieComenzada.setUltimoCapituloVisto(numCapitulo);
+	}
 }

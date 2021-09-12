@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.migmardi.service.api.Views.DescripcionSerie;
+
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Persona {
@@ -14,7 +18,10 @@ public abstract class Persona {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long idPersona;
+	@JsonView(DescripcionSerie.class)
 	private String nombre;
+	
+	protected Persona() {}
 	
 	public Persona(String nmb) {
 		setNombre(nmb);

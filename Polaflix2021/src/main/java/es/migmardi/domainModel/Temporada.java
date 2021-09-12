@@ -18,6 +18,8 @@ public class Temporada {
 	@OneToMany(cascade=CascadeType.ALL)
 	private Map<Integer, Capitulo> capitulos;
 	
+	private int numTemporada;
+	
 	protected Temporada() {}
 	
 	public Temporada(Map<Integer, Capitulo> caps) {
@@ -26,5 +28,13 @@ public class Temporada {
 	
 	public Capitulo getCapituloDeLaSerie(int numCapitulo) {
 		return capitulos.get(numCapitulo);
+	}
+
+	public void setNumeroDeTemporada(int numeroDeTemporada) {
+		this.numTemporada=numeroDeTemporada;
+	}
+	
+	public int getNumeroDeTemporada() {
+		return numTemporada;
 	}
 }

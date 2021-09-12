@@ -1,11 +1,13 @@
 package es.migmardi.domainModel;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,43 +15,73 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.migmardi.service.api.Views.DescripcionSerie;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Serie {
+	
+	
+	@JsonView(DescripcionSerie.class)
 	private String titulo;
+	
+	@JsonView(DescripcionSerie.class)
 	private float precio;
+	
+	@JsonView(DescripcionSerie.class)
 	//@OneToOne
 	private TipoDeSerie tipoDeSerie;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long ID_Serie;
+	
+	@JsonView(DescripcionSerie.class)
 	private String sinopsis;
-	@OneToOne(cascade=CascadeType.ALL)
-	private HistorialPrecios hp;
+	
+	@JsonView(DescripcionSerie.class)
 	@OneToMany(cascade=CascadeType.ALL)
-	private Map<Integer, Temporada> temporadasDeLaSerie;
-	@OneToMany(cascade=CascadeType.DETACH)
+	private List<Temporada> temporadasDeLaSerie;
+	
+	@JsonView(DescripcionSerie.class)
+	@OneToMany(cascade=CascadeType.ALL)
 	private Set<Actor> actoresPrincipales;
+	
+	@JsonView(DescripcionSerie.class)
 	@OneToMany(cascade=CascadeType.DETACH)
 	private Set<Direccion> directores;
+	
+	@ElementCollection
+	private Map<Calendar, Float> mapHistorialPrecios;
 
 	protected Serie() {}
 	
-	public Serie (String titulo, float precio, long ID_Serie, TipoDeSerie tds, String sinopsis){
+	public Serie (String titulo, float precio, TipoDeSerie tds, String sinopsis){
 		this.setTitulo(titulo);
 		this.setPrecio(precio);
 		this.setTipoDeSerie(tds);
-		this.ID_Serie=ID_Serie;
 		this.setSinopsis(sinopsis);
+		mapHistorialPrecios=new HashMap<Calendar, Float>();
 		
-		hp = new HistorialPrecios();
 		Calendar now = Calendar.getInstance();
 		now.setTimeInMillis(System.currentTimeMillis());
-		hp.setPrecioAtTime(now, precio);
+		mapHistorialPrecios.put(now, precio);
 	}
 
+
+	public Serie(Serie serie) {
+		this.actoresPrincipales=serie.actoresPrincipales;
+		this.directores=serie.directores;
+		this.ID_Serie=serie.ID_Serie;
+		this.precio=serie.precio;
+		this.sinopsis=serie.sinopsis;
+		this.temporadasDeLaSerie=serie.temporadasDeLaSerie;
+		this.tipoDeSerie=serie.tipoDeSerie;
+		this.titulo=serie.titulo;
+	}
 
 	public String getTitulo() {
 		return titulo;
@@ -109,10 +141,11 @@ public class Serie {
 	}
 
 	public void setTemporadasDeLaSerie(Temporada temporadaDeLaSerie, int numeroDeTemporada) {
-		temporadasDeLaSerie.put(numeroDeTemporada, temporadaDeLaSerie);
+		temporadasDeLaSerie.add(temporadaDeLaSerie);
+		temporadaDeLaSerie.setNumeroDeTemporada(numeroDeTemporada);
 	}
 
-	public Calendar getPreviousPriceChangeDate(Calendar currentDate) {
+	/*public Calendar getPreviousPriceChangeDate(Calendar currentDate) {
 		ArrayList<Calendar> fechas=hp.getDatesFromHistorialPrecios();
 		Calendar higherDate=fechas.get(0);
 		for(Calendar date:fechas) {
@@ -121,11 +154,18 @@ public class Serie {
 			}
 		}
 		return higherDate;
-	}
+	}*/
 
 	public float getPriceAtTime(Calendar date) {
-		return hp.getPrecioAtTime(date);
+		Calendar latestDate=Calendar.getInstance();
+		latestDate.setTimeInMillis(0);
+		for(Calendar dateSetEntry:mapHistorialPrecios.keySet()) {
+			if(dateSetEntry.compareTo(date)<dateSetEntry.compareTo(latestDate)){
+				latestDate=date;
+			}
+		}
+		//return mapHistorialPrecios.get(date);
+		return 0.75f;
 	}
-
 
 }
