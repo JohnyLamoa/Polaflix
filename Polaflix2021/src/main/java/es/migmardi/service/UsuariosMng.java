@@ -15,7 +15,6 @@ import es.migmardi.repositories.SerieRepository;
 import es.migmardi.repositories.UsuarioRepository;
 
 
-
 @Service
 public class UsuariosMng {
 		
