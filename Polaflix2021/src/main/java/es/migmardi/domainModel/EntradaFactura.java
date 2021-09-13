@@ -11,7 +11,6 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.migmardi.service.api.Views.DescripcionSerie;
 import es.migmardi.service.api.Views.DescripcionUsuario;
 
 @Entity
@@ -20,6 +19,7 @@ public class EntradaFactura {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long idEntradaFactura;
+	
 	@JsonView(DescripcionUsuario.class)
 	private Calendar fechaVisualizacion;
 	@JsonView(DescripcionUsuario.class)

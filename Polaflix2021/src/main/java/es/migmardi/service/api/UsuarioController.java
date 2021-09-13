@@ -1,6 +1,5 @@
 package es.migmardi.service.api;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,25 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.migmardi.domainModel.EntradaFactura;
 import es.migmardi.domainModel.Factura;
-import es.migmardi.domainModel.Serie;
 import es.migmardi.domainModel.Usuario;
 import es.migmardi.repositories.SerieRepository;
 import es.migmardi.repositories.UsuarioRepository;
 import es.migmardi.service.ResourceNotFoundException;
 import es.migmardi.service.UsuariosMng;
-import es.migmardi.service.api.Views.DescripcionUsuario;
 
 
 @RestController
@@ -68,13 +62,13 @@ public class UsuarioController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping(value="/{id}/facturacion")
 	@JsonView(Views.DescripcionUsuario.class)
-	public ResponseEntity<List<EntradaFactura>> obtenerFacturacion(@PathVariable("id") long userId) {
+	public ResponseEntity<List<Factura>> obtenerFacturacion(@PathVariable("id") long userId) {
 
 		Optional<Usuario> u = ur.findById(userId);
-		ResponseEntity<List<EntradaFactura>> result;
+		ResponseEntity<List<Factura>> result;
 
-		if (u.isPresent() && u.get().getFacturasMesActual().size()>0){
-			result = ResponseEntity.ok(u.get().getFacturasMesActual());
+		if (u.isPresent() && u.get().getAllFacturas().size()>0){
+			result = ResponseEntity.ok(u.get().getAllFacturas());
 		} else { 
 			result = ResponseEntity.notFound().build();
 		}

@@ -37,4 +37,8 @@ public class Temporada {
 	public int getNumeroDeTemporada() {
 		return numTemporada;
 	}
+	
+	public int getNumCapitulos() {
+		return capitulos.size();
+	}
 }

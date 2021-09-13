@@ -1,5 +1,6 @@
 package es.migmardi.domainModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,20 +20,23 @@ public class Factura {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long idFactura;
+	@JsonView(DescripcionUsuario.class)
 	private int numMes;
+	@JsonView(DescripcionUsuario.class)
 	private int anho;
 	@JsonView(DescripcionUsuario.class)
 	private float coste;
-	@OneToMany(cascade=CascadeType.REMOVE)
+	@JsonView(DescripcionUsuario.class)
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<EntradaFactura> elementosFactura;
 	
 	protected Factura() {}
 	
-	public Factura(int nM, int a, float cos, List<EntradaFactura> eF) {
+	public Factura(int nM, int a, float cos) {
 		numMes=nM;
 		anho=a;
 		coste=cos;
-		elementosFactura = eF;
+		elementosFactura = new ArrayList<EntradaFactura>(); 
 	}
 
 	public int getNumMes() {
@@ -47,7 +51,13 @@ public class Factura {
 		return coste;
 	}
 
+	public void addElementoFactura(EntradaFactura ef) {
+		elementosFactura.add(ef);
+	}
+	
 	public List<EntradaFactura> getElementosFactura() {
 		return elementosFactura;
 	}
+	
+	
 }

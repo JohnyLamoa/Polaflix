@@ -28,17 +28,15 @@ public class UsuariosMng {
 	
 	
 	@Transactional
-	public Usuario visualizaCapitulo(long userID,long serieID, int numTemporada, int numCapitulo) throws ResourceNotFoundException {
+	public void visualizaCapitulo(long userID,long serieID, int numTemporada, int numCapitulo) throws ResourceNotFoundException {
 		
 		Usuario user = ur.findById(userID).orElseThrow(ResourceNotFoundException::new);
-		Serie serie = (Serie) sr.findById(serieID).orElseThrow(ResourceNotFoundException::new); 
+		Serie serie = sr.findById(serieID).orElseThrow(ResourceNotFoundException::new); 
 		
 		Temporada temporada = serie.getTemporadaDeLaSerie(numTemporada);
 		Capitulo capitulo = temporada.getCapituloDeLaSerie(numCapitulo);
 		
-		user.addSerieToListaComenzadas(serie, temporada.getNumeroDeTemporada(), capitulo.getNumeroDeCapitulo());
-		
-		return user;
+		user.visualizaCapitulo(serie, temporada, capitulo);
 	}
 	
 	@Transactional

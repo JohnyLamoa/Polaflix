@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import es.migmardi.domainModel.Actor;
 import es.migmardi.domainModel.Capitulo;
 import es.migmardi.domainModel.EntradaFactura;
+import es.migmardi.domainModel.Factura;
 import es.migmardi.domainModel.Serie;
 import es.migmardi.domainModel.Temporada;
 import es.migmardi.domainModel.TipoDeAbono;
@@ -91,11 +92,13 @@ public class AppFeeder implements CommandLineRunner {
 		EntradaFactura ef2=new EntradaFactura(cal2, s1, 1, 2);
 		EntradaFactura ef3=new EntradaFactura(cal3, s1, 1, 3);
 		
+		Factura f1 =new Factura(1, 2020, 0.0f);
 		u1.addEntradaFactura(ef1);
 		u1.addEntradaFactura(ef2);
 		u1.addEntradaFactura(ef3);
+		u1.addFactura();
 		
-		//u1.addSerieToListaPendientes(s1);
+		u1.addSerieToListaPendientes(s1);
 		//u1.addSerieToListaPendientes(s2);
 		//u1.addSerieToListaPendientes(s3);
 		

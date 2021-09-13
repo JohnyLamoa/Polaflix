@@ -20,13 +20,14 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.migmardi.service.api.Views.DescripcionSerie;
+import es.migmardi.service.api.Views.DescripcionUsuario;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Serie {
 	
 	
-	@JsonView(DescripcionSerie.class)
+	@JsonView({DescripcionSerie.class, DescripcionUsuario.class})
 	private String titulo;
 	
 	@JsonView(DescripcionSerie.class)
@@ -43,9 +44,9 @@ public class Serie {
 	@JsonView(DescripcionSerie.class)
 	private String sinopsis;
 	
-	@JsonView(DescripcionSerie.class)
+	@JsonView({DescripcionSerie.class, DescripcionUsuario.class})
 	@OneToMany(cascade=CascadeType.ALL)
-	private List<Temporada> temporadasDeLaSerie;
+	private Map<Integer, Temporada> temporadasDeLaSerie;
 	
 	@JsonView(DescripcionSerie.class)
 	@OneToMany(cascade=CascadeType.ALL)
@@ -67,6 +68,7 @@ public class Serie {
 		this.setTipoDeSerie(tds);
 		this.setSinopsis(sinopsis);
 		mapHistorialPrecios=new HashMap<Calendar, Float>();
+		temporadasDeLaSerie=new HashMap<Integer, Temporada>();
 		
 		Calendar now = Calendar.getInstance();
 		now.setTimeInMillis(System.currentTimeMillis());
@@ -139,15 +141,12 @@ public class Serie {
 	}
 
 	public Temporada getTemporadaDeLaSerie(int numeroDeTemporada) {
-		return temporadasDeLaSerie.get(numeroDeTemporada-1);
+		return temporadasDeLaSerie.get(numeroDeTemporada);
 	}
 
 	public void setTemporadasDeLaSerie(Temporada temporadaDeLaSerie, int numeroDeTemporada) {
-		if(temporadasDeLaSerie==null) {
-			temporadasDeLaSerie=new ArrayList<Temporada>();
-		}
-		temporadasDeLaSerie.add(numeroDeTemporada-1, temporadaDeLaSerie);
-		temporadaDeLaSerie.setNumeroDeTemporada(numeroDeTemporada-1);
+		temporadasDeLaSerie.put(numeroDeTemporada, temporadaDeLaSerie);
+		temporadaDeLaSerie.setNumeroDeTemporada(numeroDeTemporada);
 	}
 
 	/*public Calendar getPreviousPriceChangeDate(Calendar currentDate) {
@@ -171,6 +170,10 @@ public class Serie {
 		}
 		//return mapHistorialPrecios.get(date);
 		return 0.75f;
+	}
+	
+	public int getNumTemporadas() {
+		return temporadasDeLaSerie.size();
 	}
 
 }

@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import es.migmardi.domainModel.Serie;
 import es.migmardi.repositories.SerieRepository;
-import es.migmardi.service.api.Views.DescripcionSerie;
 
 
 
