@@ -158,17 +158,18 @@ public class Usuario {
 		}
 		
 		if(listaSeriesComenzadas.contains(ser)) {
-			if(ser.getNumTemporadas()==temp.getNumeroDeTemporada() & temp.getNumCapitulos()==cap.getNumeroDeCapitulo()) {
-				removeSerieFromListaComenzadas(ser);
-				addSerieToListaVistas(ser);
-			}else{
-				int indexSerie=getIndexSerieComenzadaFromListaSeriesComenzadas(ser);
-				listaSeriesComenzadas.get(indexSerie).setUltimaTemporadaVista(temp.getNumeroDeTemporada());
-				listaSeriesComenzadas.get(indexSerie).setUltimoCapituloVisto(cap.getNumeroDeCapitulo());
-			}
+			int indexSerie=getIndexSerieComenzadaFromListaSeriesComenzadas(ser);
+			listaSeriesComenzadas.get(indexSerie).setUltimaTemporadaVista(temp.getNumeroDeTemporada());
+			listaSeriesComenzadas.get(indexSerie).setUltimoCapituloVisto(cap.getNumeroDeCapitulo());
 		}else {
 			addSerieToListaComenzadas(ser, temp.getNumeroDeTemporada(), cap.getNumeroDeCapitulo());
 		}
+		
+		if(ser.getNumTemporadas()==temp.getNumeroDeTemporada() & temp.getNumCapitulos()==cap.getNumeroDeCapitulo()) {
+			removeSerieFromListaComenzadas(ser);
+			addSerieToListaVistas(ser);
+		}	
+		
 	}
 	
 	public float getFacturacion() {
