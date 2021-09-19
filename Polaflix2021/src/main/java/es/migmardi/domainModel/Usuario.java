@@ -118,6 +118,26 @@ public class Usuario {
 
 	public void removeSerieFromListaComenzadas(Serie ser) {
 		listaSeriesComenzadas.remove(ser);
+		
+	}
+	
+	/*
+	public SerieComenzada getSerieComenzadaFromListaSeriesComenzadas(Serie serie){
+		for(SerieComenzada s:listaSeriesComenzadas){
+			if(s.getSerie()==serie) {
+				return s;
+			}
+		}
+		return null;
+	}*/
+	
+	public int getIndexSerieComenzadaFromListaSeriesComenzadas(Serie serie){
+		for(int i=0; i<listaSeriesComenzadas.size()-1; i++){
+			if(listaSeriesComenzadas.get(i).getSerie()==serie) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public void addSerieToListaVistas(Serie serie) {
@@ -139,10 +159,12 @@ public class Usuario {
 		
 		if(listaSeriesComenzadas.contains(ser)) {
 			if(ser.getNumTemporadas()==temp.getNumeroDeTemporada() & temp.getNumCapitulos()==cap.getNumeroDeCapitulo()) {
-				addSerieToListaVistas(ser);
 				removeSerieFromListaComenzadas(ser);
+				addSerieToListaVistas(ser);
 			}else{
-				//set ucv y utv
+				int indexSerie=getIndexSerieComenzadaFromListaSeriesComenzadas(ser);
+				listaSeriesComenzadas.get(indexSerie).setUltimaTemporadaVista(temp.getNumeroDeTemporada());
+				listaSeriesComenzadas.get(indexSerie).setUltimoCapituloVisto(cap.getNumeroDeCapitulo());
 			}
 		}else {
 			addSerieToListaComenzadas(ser, temp.getNumeroDeTemporada(), cap.getNumeroDeCapitulo());

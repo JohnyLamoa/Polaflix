@@ -1,17 +1,19 @@
 package es.migmardi.domainModel;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
 public class SerieComenzada extends Serie{
 
 	private int ultimaTemporadaVista;
 	private int ultimoCapituloVisto;
-	
+	@OneToOne
+	private Serie serie;
 	protected SerieComenzada() {}
 	
 	public SerieComenzada(Serie serie, int utv, int ucv) {
-		super(serie);
+		this.serie=serie;
 		setUltimaTemporadaVista(utv);
 		setUltimoCapituloVisto(ucv);
 	}
@@ -30,6 +32,10 @@ public class SerieComenzada extends Serie{
 
 	public void setUltimoCapituloVisto(int ultimoCapituloVisto) {
 		this.ultimoCapituloVisto = ultimoCapituloVisto;
+	}
+
+	public Serie getSerie() {
+		return serie;
 	}
 
 }
